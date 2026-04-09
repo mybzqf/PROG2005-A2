@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="app-header">
+    <div class="header-content">
+      <h1>Inventory Management System</h1>
+      <p class="header-subtitle">Manage your inventory efficiently</p>
+    </div>
+  </header>
+
+  <!-- Navigation Section -->
+  <nav class="app-nav">
+    <div class="nav-content">
+      <div class="nav-buttons">
+        <button id="btn-view-all" class="nav-btn active">All Items</button>
+        <button id="btn-view-popular" class="nav-btn">Popular Items</button>
+        <button id="btn-add-item" class="nav-btn">Add Item</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search by item name...">
+        <button id="btn-search" class="btn btn-search">Search</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Notification Area -->
+  <div id="notification-area" class="notification-area"></div>
+
+  <!-- Main Content Area -->
+  <main class="app-main">
+    <div id="items-display" class="items-display">
+      <!-- Dynamic content rendered here via innerHTML -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>&copy; 2026 Inventory Management System. All rights reserved.</p>
+  </footer>
+
+  <!-- Load compiled TypeScript -->
+  <script src="dist/app.js"></script>
+</body>
+</html>
