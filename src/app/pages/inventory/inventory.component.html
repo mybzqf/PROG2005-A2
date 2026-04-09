@@ -1,0 +1,237 @@
+<!-- Inventory Management Page Template -->
+<div class="inventory-container">
+  <h1>Inventory Management</h1>
+
+  <!-- Notification Bar -->
+  @if (notification) {
+    <div class="notification" [class]="'notification-' + notification.type">
+      <span>{{ notification.message }}</span>
+      <button class="notification-close" (click)="clearNotification()">×</button>
+    </div>
+  }
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <div class="view-buttons">
+      <button
+        class="btn"
+        [class.btn-active]="currentView === 'all'"
+        (click)="switchView('all')">
+        All Items
+      </button>
+      <button
+        class="btn"
+        [class.btn-active]="currentView === 'popular'"
+        (click)="switchView('popular')">
+        Popular Items
+      </button>
+    </div>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add New Item</button>
+  </div>
+
+  <!-- Add Item Form -->
+  @if (showAddForm) {
+    <div class="form-container">
+      <h2>Add New Item</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="add-itemId">Item ID *</label>
+          <input type="text" id="add-itemId" [(ngModel)]="newItem.itemId" placeholder="e.g., ITEM006">
+        </div>
+        <div class="form-group">
+          <label for="add-itemName">Item Name *</label>
+          <input type="text" id="add-itemName" [(ngModel)]="newItem.itemName" placeholder="Enter item name">
+        </div>
+        <div class="form-group">
+          <label for="add-category">Category *</label>
+          <select id="add-category" [(ngModel)]="newItem.category">
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="add-quantity">Quantity *</label>
+          <input type="number" id="add-quantity" [(ngModel)]="newItem.quantity" min="0" step="1"
+                 (keypress)="validateNumericInput($event)">
+        </div>
+        <div class="form-group">
+          <label for="add-price">Price ($) *</label>
+          <input type="number" id="add-price" [(ngModel)]="newItem.price" min="0" step="0.01"
+                 (keypress)="validateNumericInput($event)">
+        </div>
+        <div class="form-group">
+          <label for="add-supplierName">Supplier Name *</label>
+          <input type="text" id="add-supplierName" [(ngModel)]="newItem.supplierName" placeholder="Enter supplier name">
+        </div>
+        <div class="form-group">
+          <label for="add-stockStatus">Stock Status *</label>
+          <select id="add-stockStatus" [(ngModel)]="newItem.stockStatus">
+            @for (status of stockStatuses; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="add-popularItem">Popular Item *</label>
+          <select id="add-popularItem" [(ngModel)]="newItem.popularItem">
+            @for (option of popularOptions; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group form-group-full">
+          <label for="add-comment">Comment (Optional)</label>
+          <input type="text" id="add-comment" [(ngModel)]="newItem.comment" placeholder="Enter a comment (optional)">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="handleAddItem()">Add Item</button>
+        <button class="btn btn-secondary" (click)="hideAllForms()">Cancel</button>
+      </div>
+    </div>
+  }
+
+  <!-- Edit Item Form -->
+  @if (showEditForm) {
+    <div class="form-container">
+      <h2>Edit Item: {{ editOriginalName }}</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="edit-itemId">Item ID</label>
+          <input type="text" id="edit-itemId" [value]="editItem.itemId" readonly class="readonly-input">
+        </div>
+        <div class="form-group">
+          <label for="edit-itemName">Item Name *</label>
+          <input type="text" id="edit-itemName" [(ngModel)]="editItem.itemName">
+        </div>
+        <div class="form-group">
+          <label for="edit-category">Category *</label>
+          <select id="edit-category" [(ngModel)]="editItem.category">
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-quantity">Quantity *</label>
+          <input type="number" id="edit-quantity" [(ngModel)]="editItem.quantity" min="0" step="1"
+                 (keypress)="validateNumericInput($event)">
+        </div>
+        <div class="form-group">
+          <label for="edit-price">Price ($) *</label>
+          <input type="number" id="edit-price" [(ngModel)]="editItem.price" min="0" step="0.01"
+                 (keypress)="validateNumericInput($event)">
+        </div>
+        <div class="form-group">
+          <label for="edit-supplierName">Supplier Name *</label>
+          <input type="text" id="edit-supplierName" [(ngModel)]="editItem.supplierName">
+        </div>
+        <div class="form-group">
+          <label for="edit-stockStatus">Stock Status *</label>
+          <select id="edit-stockStatus" [(ngModel)]="editItem.stockStatus">
+            @for (status of stockStatuses; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-popularItem">Popular Item *</label>
+          <select id="edit-popularItem" [(ngModel)]="editItem.popularItem">
+            @for (option of popularOptions; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group form-group-full">
+          <label for="edit-comment">Comment (Optional)</label>
+          <input type="text" id="edit-comment" [(ngModel)]="editItem.comment">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="handleUpdateItem()">Save Changes</button>
+        <button class="btn btn-secondary" (click)="hideAllForms()">Cancel</button>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Confirmation Dialog -->
+  @if (showDeleteConfirm) {
+    <div class="confirm-dialog">
+      <div class="confirm-icon">⚠️</div>
+      <h2>Confirm Deletion</h2>
+      <p>Are you sure you want to delete "<strong>{{ deleteTargetName }}</strong>"?</p>
+      <p class="confirm-warning">This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-danger" (click)="executeDelete()">Yes, Delete</button>
+        <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  }
+
+  <!-- Items Table -->
+  <div class="table-section">
+    <h2>
+      @if (currentView === 'popular') {
+        Popular Items ({{ items.length }})
+      } @else {
+        All Inventory Items ({{ items.length }})
+      }
+    </h2>
+
+    @if (items.length === 0) {
+      <div class="no-results">No items found.</div>
+    } @else {
+      <div class="table-container">
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Item Name</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Price ($)</th>
+              <th>Supplier</th>
+              <th>Stock Status</th>
+              <th>Popular</th>
+              <th>Comment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items; track item.itemId) {
+              <tr [class.out-of-stock]="item.stockStatus === 'Out of Stock'"
+                  [class.low-stock]="item.stockStatus === 'Low Stock'">
+                <td>{{ item.itemId }}</td>
+                <td>{{ item.itemName }}</td>
+                <td>
+                  <span class="category-badge" [class]="'category-' + item.category.toLowerCase()">
+                    {{ item.category }}
+                  </span>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price | number:'1.2-2' }}</td>
+                <td>{{ item.supplierName }}</td>
+                <td>
+                  <span class="status-badge" [class]="'status-' + item.stockStatus.replace(' ', '-').toLowerCase()">
+                    {{ item.stockStatus }}
+                  </span>
+                </td>
+                <td>
+                  <span class="popular-badge" [class]="'popular-' + item.popularItem.toLowerCase()">
+                    {{ item.popularItem }}
+                  </span>
+                </td>
+                <td>{{ item.comment || '—' }}</td>
+                <td class="actions-cell">
+                  <button class="btn btn-edit" (click)="openEditForm(item)">Edit</button>
+                  <button class="btn btn-danger" (click)="confirmDelete(item.itemName)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,117 @@
+<!-- Search Page Template -->
+<div class="search-container">
+  <h1>Search Inventory</h1>
+  <p class="page-description">Find inventory items using the search bar and filters below.</p>
+
+  <!-- Search & Filter Panel -->
+  <div class="filter-panel">
+    <div class="filter-grid">
+      <!-- Search by Name -->
+      <div class="filter-group filter-group-wide">
+        <label for="search-name">Search by Item Name</label>
+        <input
+          type="text"
+          id="search-name"
+          [(ngModel)]="searchTerm"
+          placeholder="Enter item name..."
+          (keypress)="onSearchKeypress($event)">
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <label for="filter-category">Category</label>
+        <select id="filter-category" [(ngModel)]="selectedCategory">
+          <option value="">All Categories</option>
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Stock Status Filter -->
+      <div class="filter-group">
+        <label for="filter-status">Stock Status</label>
+        <select id="filter-status" [(ngModel)]="selectedStockStatus">
+          <option value="">All Statuses</option>
+          @for (status of stockStatuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Popular Only Checkbox -->
+      <div class="filter-group filter-checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="popularOnly">
+          Popular Items Only
+        </label>
+      </div>
+    </div>
+
+    <!-- Search Actions -->
+    <div class="filter-actions">
+      <button class="btn btn-primary" (click)="performSearch()">Search</button>
+      <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
+    </div>
+  </div>
+
+  <!-- Search Results -->
+  @if (hasSearched) {
+    <div class="results-section">
+      <h2>Search Results ({{ results.length }} found)</h2>
+
+      @if (results.length === 0) {
+        <div class="no-results">
+          <p>No items match your search criteria.</p>
+          <p class="no-results-hint">Try adjusting your filters or search term.</p>
+        </div>
+      } @else {
+        <div class="table-container">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Price ($)</th>
+                <th>Supplier</th>
+                <th>Stock Status</th>
+                <th>Popular</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of results; track item.itemId) {
+                <tr [class.out-of-stock]="item.stockStatus === 'Out of Stock'"
+                    [class.low-stock]="item.stockStatus === 'Low Stock'">
+                  <td>{{ item.itemId }}</td>
+                  <td>{{ item.itemName }}</td>
+                  <td>
+                    <span class="category-badge" [class]="'category-' + item.category.toLowerCase()">
+                      {{ item.category }}
+                    </span>
+                  </td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.price | number:'1.2-2' }}</td>
+                  <td>{{ item.supplierName }}</td>
+                  <td>
+                    <span class="status-badge" [class]="'status-' + item.stockStatus.replace(' ', '-').toLowerCase()">
+                      {{ item.stockStatus }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="popular-badge" [class]="'popular-' + item.popularItem.toLowerCase()">
+                      {{ item.popularItem }}
+                    </span>
+                  </td>
+                  <td>{{ item.comment || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  }
+</div>

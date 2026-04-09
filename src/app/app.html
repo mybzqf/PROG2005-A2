@@ -1,0 +1,32 @@
+<!-- Root Application Template -->
+<!-- Provides navigation header, main content area, and footer -->
+
+<!-- Header with Navigation -->
+<header class="app-header">
+  <div class="header-content">
+    <a routerLink="/" class="logo" (click)="closeMobileMenu()">
+      <span class="logo-icon">📦</span>
+      <span class="logo-text">{{ title }}</span>
+    </a>
+    <button class="mobile-toggle" (click)="toggleMobileMenu()">
+      {{ mobileMenuOpen ? '✕' : '☰' }}
+    </button>
+    <nav class="main-nav" [class.nav-open]="mobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a>
+      <a routerLink="/inventory" routerLinkActive="active" (click)="closeMobileMenu()">Inventory</a>
+      <a routerLink="/search" routerLinkActive="active" (click)="closeMobileMenu()">Search</a>
+      <a routerLink="/privacy" routerLinkActive="active" (click)="closeMobileMenu()">Privacy & Security</a>
+      <a routerLink="/help" routerLinkActive="active" (click)="closeMobileMenu()">Help</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Main Content Area -->
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="app-footer">
+  <p>&copy; 2026 Inventory Management System. All rights reserved.</p>
+</footer>

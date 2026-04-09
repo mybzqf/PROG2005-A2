@@ -1,0 +1,49 @@
+<!-- Home Page Template -->
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <h1>{{ appTitle }}</h1>
+    <p class="hero-description">{{ appDescription }}</p>
+    <div class="hero-actions">
+      <a routerLink="/inventory" class="btn btn-primary">Manage Inventory</a>
+      <a routerLink="/search" class="btn btn-secondary">Search Items</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <div class="feature-card">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Quick Navigation Section -->
+  <section class="quick-nav-section">
+    <h2>Quick Navigation</h2>
+    <div class="quick-nav-grid">
+      <a routerLink="/inventory" class="quick-nav-card">
+        <span class="quick-nav-icon">📦</span>
+        <span class="quick-nav-label">Inventory Management</span>
+      </a>
+      <a routerLink="/search" class="quick-nav-card">
+        <span class="quick-nav-icon">🔍</span>
+        <span class="quick-nav-label">Search Items</span>
+      </a>
+      <a routerLink="/privacy" class="quick-nav-card">
+        <span class="quick-nav-icon">🔒</span>
+        <span class="quick-nav-label">Privacy & Security</span>
+      </a>
+      <a routerLink="/help" class="quick-nav-card">
+        <span class="quick-nav-icon">❓</span>
+        <span class="quick-nav-label">Help & FAQs</span>
+      </a>
+    </div>
+  </section>
+</div>

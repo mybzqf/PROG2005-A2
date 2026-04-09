@@ -1,0 +1,49 @@
+<!-- Help & FAQs Page Template -->
+<div class="help-container">
+  <h1>{{ pageTitle }}</h1>
+  <p class="page-intro">
+    Find answers to frequently asked questions and troubleshooting guidance below.
+  </p>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      @for (faq of faqs; track faq.question; let i = $index) {
+        <div class="faq-item" [class.faq-open]="faq.isOpen">
+          <button class="faq-question" (click)="toggleFaq(i)">
+            <span>{{ faq.question }}</span>
+            <span class="faq-toggle">{{ faq.isOpen ? '−' : '+' }}</span>
+          </button>
+          @if (faq.isOpen) {
+            <div class="faq-answer">
+              <p>{{ faq.answer }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Troubleshooting Section -->
+  <section class="troubleshooting-section">
+    <h2>Troubleshooting Guide</h2>
+    <div class="troubleshooting-list">
+      @for (tip of troubleshootingTips; track tip.title) {
+        <div class="troubleshooting-card">
+          <h3>{{ tip.title }}</h3>
+          <p>{{ tip.solution }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <h2>Need More Help?</h2>
+    <p>
+      If you cannot find the answer to your question above, please consult the application
+      documentation or contact the system administrator for further assistance.
+    </p>
+  </section>
+</div>

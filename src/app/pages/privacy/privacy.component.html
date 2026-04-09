@@ -1,0 +1,38 @@
+<!-- Privacy and Security Analysis Page Template -->
+<div class="privacy-container">
+  <h1>{{ pageTitle }}</h1>
+  <p class="page-intro">
+    This page outlines the key privacy and security considerations relevant to the
+    Inventory Management System. Understanding these aspects is essential for maintaining
+    data protection and ensuring the application meets security best practices.
+  </p>
+
+  <!-- Security Topics -->
+  <div class="topics-grid">
+    @for (topic of securityTopics; track topic.title) {
+      <div class="topic-card">
+        <div class="topic-header">
+          <span class="topic-icon">{{ topic.icon }}</span>
+          <h2>{{ topic.title }}</h2>
+        </div>
+        <p>{{ topic.description }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Summary Section -->
+  <div class="summary-section">
+    <h2>Summary</h2>
+    <p>
+      This inventory management application prioritises simplicity and ease of use while
+      incorporating fundamental security measures through Angular's built-in protections
+      and TypeScript's type safety. For a production deployment, additional security layers
+      including authentication, server-side validation, encrypted storage, and comprehensive
+      audit logging would be necessary to fully protect sensitive inventory and business data.
+    </p>
+    <p>
+      Regular security audits, dependency updates, and adherence to the OWASP Top 10
+      guidelines are recommended practices for maintaining a secure application over time.
+    </p>
+  </div>
+</div>
